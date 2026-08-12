@@ -1,0 +1,109 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact | Paint Studio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="html_paint_website.html" class="brand">
+        <span class="brand-mark">✏️</span>
+        <span>Paint Studio</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="html_paint_website.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="studio.html">Studio</a>
+        <a href="contact.html" class="active">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="themeToggle" class="theme-btn" type="button">Dark mode</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container page-intro">
+        <span class="kicker">Get in touch</span>
+        <h1>Let’s build something memorable.</h1>
+        <p>Whether you need brand visuals, illustration, or creative support, we’d love to hear about your project.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container contact-layout">
+        <aside class="contact-card">
+          <span class="kicker">Contact info</span>
+          <h2>Start a conversation.</h2>
+          <p>Share your goals, timeline, and vision. We’ll respond with ideas, next steps, and a plan that fits your project.</p>
+
+          <ul class="contact-list">
+            <li><strong>Email:</strong>fgyebi163@gmail.com</li>
+            <li><strong>Phone:</strong> +233 55 803 2827</li>
+            <li><strong>Location:</strong> Ghana,Obuasi </li>
+          </ul>
+        </aside>
+
+        <div class="form-card">
+          <form onsubmit="return sendEmail();">
+            <div class="form-grid">
+              <div class="form-row">
+                <label>
+                  Name
+                  <input id="name" type="text" placeholder="Your name" required />
+                </label>
+                <label>
+                  Email
+                  <input id="email" type="email" placeholder="your@email.com" required />
+                </label>
+              </div>
+
+              <label>
+                Subject
+                <input id="subject" type="text" placeholder="Project or inquiry" required />
+              </label>
+
+              <label>
+                Message
+                <textarea id="message" placeholder="Tell us about your project..." required></textarea>
+              </label>
+
+              <button class="submit-btn" type="submit">Send message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <div>© 2026 Paint Studio</div>
+      <div>Creative design for bold ideas.</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function sendEmail() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      const mailSubject = encodeURIComponent(`Website message from ${name} - ${subject}`);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`);
+
+      window.location.href = `mailto:hello@paintstudio.com?subject=${mailSubject}&body=${body}`;
+      return false;
+    }
+  </script>
+</body>
+</html>

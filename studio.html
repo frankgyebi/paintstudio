@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio | Paint Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .paint-wrap {
+      padding: 2rem 0 4rem;
+      flex: 1;
+    }
+
+    .paint-card {
+      padding: 1rem;
+    }
+
+    .paint-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      align-items: center;
+      padding: 0.7rem 0.8rem 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tool-group {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding-right: 0.8rem;
+      border-right: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+
+    .tool-group:last-child {
+      border-right: none;
+    }
+
+    .tool-button,
+    .size-btn {
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      color: var(--text);
+      padding: 0.7rem 0.85rem;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .tool-button.active,
+    .size-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      border-color: transparent;
+    }
+
+    .swatch {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      border: 2px solid rgba(15, 23, 42, 0.15);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .swatch:hover,
+    .swatch.active {
+      transform: scale(1.08);
+      border-color: var(--text);
+    }
+
+    .paint-canvas-shell {
+      padding: 1rem;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 560px;
+      background: white;
+      border-radius: 18px;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.02);
+      cursor: crosshair;
+    }
+
+    @media (max-width: 640px) {
+      canvas {
+        height: 420px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="html_paint_website.html" class="brand">
+        <span class="brand-mark">✏️</span>
+        <span>Paint Studio</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="html_paint_website.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="studio.html" class="active">Studio</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="themeToggle" class="theme-btn" type="button">Dark mode</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="paint-wrap">
+    <div class="container">
+      <div class="paint-card">
+        <div class="paint-toolbar">
+          <div class="tool-group">
+            <button class="tool-button active" data-tool="pencil">Pencil</button>
+            <button class="tool-button" data-tool="line">Line</button>
+            <button class="tool-button" data-tool="rect">Rectangle</button>
+            <button class="tool-button" data-tool="circle">Circle</button>
+            <button class="tool-button" data-tool="text">Text</button>
+            <button class="tool-button" data-tool="fill">Fill</button>
+          </div>
+
+          <div class="tool-group" aria-label="Colors">
+            <span class="swatch active" data-color="#111827" style="background:#111827"></span>
+            <span class="swatch" data-color="#ffffff" style="background:#ffffff"></span>
+            <span class="swatch" data-color="#ef4444" style="background:#ef4444"></span>
+            <span class="swatch" data-color="#16a34a" style="background:#16a34a"></span>
+            <span class="swatch" data-color="#2563eb" style="background:#2563eb"></span>
+            <span class="swatch" data-color="#f59e0b" style="background:#f59e0b"></span>
+            <span class="swatch" data-color="#7c3aed" style="background:#7c3aed"></span>
+            <span class="swatch" data-color="#ec4899" style="background:#ec4899"></span>
+            <span class="swatch" data-color="#14b8a6" style="background:#14b8a6"></span>
+            <span class="swatch" data-color="#f97316" style="background:#f97316"></span>
+          </div>
+
+          <div class="tool-group">
+            <button class="size-btn active" data-size="2">2</button>
+            <button class="size-btn" data-size="4">4</button>
+            <button class="size-btn" data-size="6">6</button>
+            <button class="size-btn" data-size="10">10</button>
+            <button class="size-btn" data-size="15">15</button>
+          </div>
+
+          <div class="tool-group">
+            <input id="textInput" type="text" placeholder="Add text" style="min-width:160px;" />
+          </div>
+
+          <div class="tool-group">
+            <button class="secondary-btn" id="clearBtn">Clear</button>
+            <button class="primary-btn" id="saveBtn">Save PNG</button>
+          </div>
+        </div>
+
+        <div class="paint-canvas-shell">
+          <canvas id="paintCanvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <div>© 2026 Paint Studio</div>
+      <div>Creative design for bold ideas.</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    const toolButtons = document.querySelectorAll('.tool-button');
+    const swatches = document.querySelectorAll('.swatch');
+    const sizeButtons = document.querySelectorAll('.size-btn');
+    const textInput = document.getElementById('textInput');
+
+    let drawing = false;
+    let tool = 'pencil';
+    let color = '#111827';
+    let size = 2;
+    let startX = 0;
+    let startY = 0;
+    let snapshot = null;
+
+    function resizeCanvas() {
+      const ratio = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+    }
+
+    function updateToolButtons() {
+      toolButtons.forEach((button) => {
+        button.classList.toggle('active', button.dataset.tool === tool);
+      });
+    }
+
+    function updateSwatches() {
+      swatches.forEach((swatch) => {
+        swatch.classList.toggle('active', swatch.dataset.color === color);
+      });
+    }
+
+    function updateSizeButtons() {
+      sizeButtons.forEach((button) => {
+        button.classList.toggle('active', Number(button.dataset.size) === size);
+      });
+    }
+
+    toolButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        tool = button.dataset.tool;
+        updateToolButtons();
+      });
+    });
+
+    swatches.forEach((swatch) => {
+      swatch.addEventListener('click', () => {
+        color = swatch.dataset.color;
+        updateSwatches();
+      });
+    });
+
+    sizeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        size = Number(button.dataset.size);
+        updateSizeButtons();
+      });
+    });
+
+    canvas.addEventListener('mousedown', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      startX = event.clientX - rect.left;
+      startY = event.clientY - rect.top;
+      drawing = true;
+
+      if (tool === 'fill') {
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        drawing = false;
+        return;
+      }
+
+      snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+      if (tool === 'pencil') {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+      }
+
+      if (tool === 'text') {
+        const text = textInput.value.trim();
+        if (!text) {
+          drawing = false;
+          return;
+        }
+        ctx.fillStyle = color;
+        ctx.font = `${size * 4}px Arial`;
+        ctx.fillText(text, startX, startY);
+        drawing = false;
+      }
+    });
+
+    canvas.addEventListener('mousemove', (event) => {
+      if (!drawing) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = size;
+      ctx.lineCap = 'round';
+
+      if (tool === 'pencil') {
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        return;
+      }
+
+      ctx.putImageData(snapshot, 0, 0);
+
+      if (tool === 'line') {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+      }
+
+      if (tool === 'rect') {
+        ctx.strokeRect(startX, startY, x - startX, y - startY);
+      }
+
+      if (tool === 'circle') {
+        const radius = Math.sqrt((x - startX) ** 2 + (y - startY) ** 2);
+        ctx.beginPath();
+        ctx.arc(startX, startY, radius, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    });
+
+    canvas.addEventListener('mouseup', () => {
+      drawing = false;
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      drawing = false;
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = 'drawing.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    updateToolButtons();
+    updateSwatches();
+    updateSizeButtons();
+  </script>
+</body>
+</html>
