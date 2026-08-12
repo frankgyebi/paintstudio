@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paint Studio</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container navbar">
+      <a href="index.html" class="brand">
+        <span class="brand-mark">✏️</span>
+        <span>Paint Studio</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="index.html" class="active">Home</a>
+        <a href="about.html">About</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="studio.html">Studio</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="themeToggle" class="theme-btn" type="button">Dark mode</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="kicker">Creative studio</span>
+          <h1>Design brighter ideas into bold digital art.</h1>
+          <p>Paint Studio helps brands, creators, and teams turn imagination into polished visuals, illustrations, and interactive creative experiences.</p>
+
+          <div class="hero-actions">
+            <a href="gallery.html" class="primary-btn">Explore gallery</a>
+            <a href="studio.html" class="secondary-btn">Open studio</a>
+          </div>
+
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>120+</strong>
+              <span>Projects shipped</span>
+            </div>
+            <div class="stat">
+              <strong>9 yrs</strong>
+              <span>Creative experience</span>
+            </div>
+            <div class="stat">
+              <strong>4.9</strong>
+              <span>Client satisfaction</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-panel">
+          <div class="preview-card">
+            <div class="preview-topbar">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+            </div>
+            <div class="preview-body">
+              <div class="preview-window"></div>
+              <div class="preview-footer">
+                <div>
+                  <strong>Spring Collection</strong>
+                  <div>Brand artwork</div>
+                </div>
+                <span class="badge">Live concept</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-intro">
+          <div>
+            <span class="kicker">What we do</span>
+            <h2>Everything creative, designed to feel alive.</h2>
+          </div>
+        </div>
+
+        <div class="card-grid">
+          <article class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3>Brand art direction</h3>
+            <p>We create visual systems and campaign art that brings personality, consistency, and energy to every touch point.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">🖌️</div>
+            <h3>Custom illustration</h3>
+            <p>From print to web, we produce original illustration work that helps brands stand out in crowded digital spaces.</p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Interactive design</h3>
+            <p>We build engaging creative experiences and visuals that feel premium, dynamic, and easy to connect with.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container split-grid">
+        <div class="info-card">
+          <span class="kicker">Why choose us</span>
+          <h2>Creative work with purpose and polish.</h2>
+          <p>We combine strategy, visual craft, and storytelling to make sure every design communicates clearly and leaves a stronger impression.</p>
+          <ul class="inline-list">
+            <li><span class="checkmark">✓</span> Smart brand-first creative direction</li>
+            <li><span class="checkmark">✓</span> Flexible across digital and print</li>
+            <li><span class="checkmark">✓</span> Fast collaborative process</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <span class="kicker">Our process</span>
+          <h2>Simple, collaborative, and effective.</h2>
+          <ul class="inline-list">
+            <li><span class="checkmark">1</span> Discover your audience and goals</li>
+            <li><span class="checkmark">2</span> Design visual concepts and moodboards</li>
+            <li><span class="checkmark">3</span> Refine, present, and deliver polished assets</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-intro">
+          <div>
+            <span class="kicker">Recent work</span>
+            <h2>Projects built for impact.</h2>
+          </div>
+          <a href="gallery.html" class="secondary-btn">View all</a>
+        </div>
+
+        <div class="gallery-grid">
+          <article class="gallery-card">
+            <div class="gallery-art art-1">Brand</div>
+            <div class="gallery-copy">
+              <h3>Northline</h3>
+              <p>Campaign identity and motion concept for a product launch.</p>
+            </div>
+          </article>
+
+          <article class="gallery-card">
+            <div class="gallery-art art-2">Campaign</div>
+            <div class="gallery-copy">
+              <h3>Nova Studio</h3>
+              <p>Modern web visuals crafted to highlight clarity and trust.</p>
+            </div>
+          </article>
+
+          <article class="gallery-card">
+            <div class="gallery-art art-3">Illustration</div>
+            <div class="gallery-copy">
+              <h3>City Bloom</h3>
+              <p>Texture-rich concept art designed for lifestyle storytelling.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <div>© 2026 Paint Studio</div>
+      <div>Creative design for bold ideas.</div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
