@@ -10,6 +10,8 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      /* Prevent unwanted zoom on double-tap */
+      touch-action: manipulation;
     }
 
     .paint-wrap {
@@ -53,6 +55,9 @@
       cursor: pointer;
       font-weight: 600;
       transition: 0.2s ease;
+      /* Improve touch feedback */
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
     .tool-button.active,
@@ -69,6 +74,9 @@
       border: 2px solid rgba(15, 23, 42, 0.15);
       cursor: pointer;
       transition: transform 0.15s ease;
+      /* Improve touch feedback */
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
     }
 
     .swatch:hover,
@@ -90,11 +98,43 @@
       border: 1px solid rgba(15, 23, 42, 0.08);
       box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.02);
       cursor: crosshair;
+      /* Prevent touch callout menu on iOS */
+      -webkit-user-select: none;
+      user-select: none;
+      /* Ensure proper touch interaction */
+      touch-action: none;
     }
 
     @media (max-width: 640px) {
       canvas {
         height: 420px;
+      }
+
+      .paint-toolbar {
+        gap: 0.5rem;
+        padding: 0.5rem;
+      }
+
+      .tool-button,
+      .size-btn {
+        padding: 0.6rem 0.7rem;
+        font-size: 0.9rem;
+      }
+
+      .swatch {
+        width: 24px;
+        height: 24px;
+      }
+
+      #textInput {
+        min-width: 120px !important;
+        font-size: 16px;
+      }
+
+      .secondary-btn,
+      .primary-btn {
+        padding: 0.6rem 0.9rem;
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -245,10 +285,22 @@
       });
     });
 
-    canvas.addEventListener('mousedown', (event) => {
+    // Helper function to get coordinates from mouse or touch event
+    function getCoordinates(event) {
       const rect = canvas.getBoundingClientRect();
-      startX = event.clientX - rect.left;
-      startY = event.clientY - rect.top;
+      const clientX = event.clientX !== undefined ? event.clientX : event.touches[0].clientX;
+      const clientY = event.clientY !== undefined ? event.clientY : event.touches[0].clientY;
+      return {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+    }
+
+    // Helper function to handle drawing start
+    function handleDrawStart(event) {
+      const coords = getCoordinates(event);
+      startX = coords.x;
+      startY = coords.y;
       drawing = true;
 
       if (tool === 'fill') {
@@ -276,14 +328,15 @@
         ctx.fillText(text, startX, startY);
         drawing = false;
       }
-    });
+    }
 
-    canvas.addEventListener('mousemove', (event) => {
+    // Helper function to handle drawing move
+    function handleDrawMove(event) {
       if (!drawing) return;
 
-      const rect = canvas.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      const coords = getCoordinates(event);
+      const x = coords.x;
+      const y = coords.y;
 
       ctx.strokeStyle = color;
       ctx.fillStyle = color;
@@ -315,14 +368,38 @@
         ctx.arc(startX, startY, radius, 0, Math.PI * 2);
         ctx.stroke();
       }
+    }
+
+    // Helper function to handle drawing end
+    function handleDrawEnd() {
+      drawing = false;
+    }
+
+    // Mouse events
+    canvas.addEventListener('mousedown', handleDrawStart);
+    canvas.addEventListener('mousemove', handleDrawMove);
+    canvas.addEventListener('mouseup', handleDrawEnd);
+    canvas.addEventListener('mouseleave', handleDrawEnd);
+
+    // Touch events
+    canvas.addEventListener('touchstart', (event) => {
+      event.preventDefault();
+      handleDrawStart(event);
     });
 
-    canvas.addEventListener('mouseup', () => {
-      drawing = false;
+    canvas.addEventListener('touchmove', (event) => {
+      event.preventDefault();
+      handleDrawMove(event);
     });
 
-    canvas.addEventListener('mouseleave', () => {
-      drawing = false;
+    canvas.addEventListener('touchend', (event) => {
+      event.preventDefault();
+      handleDrawEnd();
+    });
+
+    canvas.addEventListener('touchcancel', (event) => {
+      event.preventDefault();
+      handleDrawEnd();
     });
 
     document.getElementById('clearBtn').addEventListener('click', () => {
